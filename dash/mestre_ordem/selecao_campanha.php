@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,11 +10,11 @@
         /* Importação da fonte Sigmar One (usada como fallback ou base) */
         @import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
 
-        /* Definição da fonte Sigilos (Simulada via Font-Face se você tiver o arquivo, 
-           ou usando uma estilização que remeta ao tema se for apenas visual) */
+        /* Definição da fonte Sigilos */
         @font-face {
             font-family: 'sigilos';
-            src: url('fontes/sigilos.ttf') format('truetype'); /* Ajuste o caminho se necessário */
+            src: url('fontes/sigilos_conhecimento.ttf') format('truetype'); 
+            font-display: swap;
         }
 
         :root {
@@ -25,6 +24,35 @@
             --card-bg: #1a1a1a;
             --text-light: #eaeaea;
             --accent-glow: rgba(117, 9, 4, 0.6);
+            --scrollbar-bg: #0a0a0a;
+            --scrollbar-thumb: #2a2a2a;
+            --scrollbar-thumb-hover: #3a3a3a;
+        }
+
+        /* ===== ESTILO DA SCROLLBAR (MODO ESCURO) ===== */
+        /* Para navegadores baseados em Webkit (Chrome, Edge, Safari) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 5px;
+            border: 2px solid var(--scrollbar-bg);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        /* Para Firefox */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
         }
 
         body {
@@ -53,13 +81,38 @@
         }
 
         #welcome-text {
-            font-family: 'sigilos', 'Sigmar One', Arial, sans-serif;
-            font-size: 4rem;
             color: var(--secondary-red);
             text-transform: uppercase;
             letter-spacing: 5px;
             text-shadow: 0 0 20px var(--primary-red);
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0;
+            max-width: 95vw;
+        }
+
+        .char {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .char.sigilos-style {
+            font-family: 'sigilos';
+            font-size: 4.5rem;
+        }
+
+        .char.arial-style {
+            font-family: Arial, sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+        }
+
+        .word-spacer {
+            display: inline-block;
+            width: 0.8em; 
         }
 
         /* Esconde o conteúdo inicial para a animação */
@@ -275,7 +328,7 @@
     </div>
 
     <div class="main-content" id="content">
-        <a href="index.html" class="btn-voltar">
+        <a href="/dash/hub/selecao.php" class="btn-voltar">
             <i class="bi bi-arrow-left"></i> Voltar ao Hub
         </a>
 
@@ -298,7 +351,7 @@
             <!-- Campanha 1 -->
             <div class="campanha-wrapper">
                 <div class="campanha-card" onclick="window.location.href='ordem_mestre.html'">
-                    <img src="imagens/campanha1.jpg" class="campanha-img" alt="Sinais do Outro Lado" onerror="this.src='https://via.placeholder.com/300x180?text=Sinais+do+Outro+Lado'">
+                    <img src="imagens/Título_Sinais_do_Outro_Lado.webp" class="campanha-img" alt="Sinais do Outro Lado" onerror="this.src='https://via.placeholder.com/300x180?text=Sinais+do+Outro+Lado'">
                     <div class="campanha-info">
                         <div class="campanha-titulo">Sinais do Outro Lado</div>
                         <div class="campanha-stats">
@@ -360,7 +413,7 @@
             <!-- Campanha 3 -->
             <div class="campanha-wrapper">
                 <div class="campanha-card" onclick="window.location.href='ordem_mestre.html'">
-                    <img src="imagens/calamidade.webp" class="campanha-img" alt="Calamidade" onerror="this.src='https://via.placeholder.com/300x180?text=Calamidade'">
+                    <img src="imagens/calamidade.png" class="campanha-img" alt="Calamidade" onerror="this.src='https://via.placeholder.com/300x180?text=Calamidade'">
                     <div class="campanha-info">
                         <div class="campanha-titulo">Calamidade</div>
                         <div class="campanha-stats">
@@ -391,62 +444,84 @@
     </div>
 
     <script>
-        // Função de easing cúbica para suavizar o progresso
         function easeInOutCubic(t) {
             return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         }
 
-        // Função para efeito de desencriptação (Scramble Text)
         function decryptEffect(element, finalText, duration, callback) {
-            element.style.fontFamily = 'sigilos, Arial, sans-serif';
+            element.innerHTML = '';
+            const spans = [];
             
+            finalText.split('').forEach((char) => {
+                if (char === ' ') {
+                    const spacer = document.createElement('span');
+                    spacer.className = 'word-spacer';
+                    element.appendChild(spacer);
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'char sigilos-style';
+                    element.appendChild(span);
+                    spans.push({ element: span, targetChar: char, revealed: false });
+                }
+            });
+
             let startTime = null;
-            const letters = finalText.split('');
-            const revealed = new Array(letters.length).fill(false);
             
             function animate(timestamp) {
                 if (!startTime) startTime = timestamp;
                 const rawProgress = (timestamp - startTime) / duration;
                 const progress = easeInOutCubic(Math.min(rawProgress, 1));
                 
-                letters.forEach((char, i) => {
-                    if (!revealed[i] && Math.random() < progress * 0.1) {
-                        revealed[i] = true;
+                spans.forEach((item) => {
+                    if (!item.revealed) {
+                        if (Math.random() < progress * 0.1) {
+                            item.revealed = true;
+                            item.element.textContent = item.targetChar;
+                            item.element.classList.remove('sigilos-style');
+                            item.element.classList.add('arial-style');
+                        } else {
+                            item.element.textContent = Math.random().toString(36)[2];
+                        }
                     }
                 });
-
-                const currentText = letters.map((char, i) => 
-                    revealed[i] ? char : Math.random().toString(36)[2]
-                ).join('');
-                
-                element.textContent = currentText;
 
                 if (rawProgress < 1) {
                     requestAnimationFrame(animate);
                 } else {
-                    element.textContent = finalText;
-                    if (callback) setTimeout(callback, 1000); // Espera 1s após terminar para sumir
+                    spans.forEach((item) => {
+                        item.element.textContent = item.targetChar;
+                        item.element.classList.remove('sigilos-style');
+                        item.element.classList.add('arial-style');
+                    });
+                    if (callback) setTimeout(callback, 1000);
                 }
             }
             
             requestAnimationFrame(animate);
         }
 
-        // Inicia a animação ao carregar a página
         window.addEventListener('DOMContentLoaded', () => {
             const overlay = document.getElementById('welcome-overlay');
             const welcomeText = document.getElementById('welcome-text');
             const content = document.getElementById('content');
 
-            // Inicia o efeito de desencriptação
-            decryptEffect(welcomeText, "BEM VINDO", 3000, () => {
-                // Após a animação, esconde o overlay e mostra o conteúdo
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.visibility = 'hidden';
-                    content.style.opacity = '1';
-                }, 1500);
-            });
+            if (document.fonts) {
+                document.fonts.ready.then(() => {
+                    startAnimation();
+                });
+            } else {
+                startAnimation();
+            }
+
+            function startAnimation() {
+                decryptEffect(welcomeText, "BEM VINDO", 3000, () => {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.visibility = 'hidden';
+                        content.style.opacity = '1';
+                    }, 1500);
+                });
+            }
         });
     </script>
 
