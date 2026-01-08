@@ -138,7 +138,7 @@ html, body {
 }
 
 .sistema.sacramento::before {
-    background: linear-gradient(135deg, rgba(139, 69, 19, 0.7), rgba(255, 140, 0, 0.7)); /* Alaranjado terroso/vibrante */
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.7), rgba(255, 140, 0, 0.7));
 }
 
 .sistema.tormenta::before {
@@ -178,7 +178,7 @@ html, body {
 
 /* Cores de Fundo por Sistema */
 .selecao.ordem { background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(60, 0, 0, 0.95)); }
-.selecao.sacramento { background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(100, 40, 0, 0.95)); } /* Fundo alaranjado escuro */
+.selecao.sacramento { background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(100, 40, 0, 0.95)); }
 .selecao.tormenta { background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(0, 60, 60, 0.95)); }
 
 .selecao.ativa {
@@ -270,7 +270,7 @@ html, body {
 .selecao.ordem .voltar-selecao { background: #500000; }
 .selecao.ordem .voltar-selecao:hover { background: #750904; transform: translateX(5px); box-shadow: 0 0 15px rgba(117, 9, 4, 0.5); }
 
-.selecao.sacramento .voltar-selecao { background: #8b4513; } /* Marrom alaranjado */
+.selecao.sacramento .voltar-selecao { background: #8b4513; }
 .selecao.sacramento .voltar-selecao:hover { background: #ff8c00; transform: translateX(5px); box-shadow: 0 0 15px rgba(255, 140, 0, 0.5); }
 
 .selecao.tormenta .voltar-selecao { background: #006464; }
@@ -324,22 +324,22 @@ const sistemasConfig = {
     ordem: {
         classe: 'ordem',
         opcoes: [
-            { nome: 'Mestre', img: 'imagens/mestre.jfif' },
-            { nome: 'Agente', img: 'imagens/Agente.jfif' }
+            { nome: 'Mestre', img: 'imagens/mestre.jfif', link: '/dash/mestre_ordem/selecao_campanha.php' },
+            { nome: 'Agente', img: 'imagens/Agente.jfif', link: 'ordem_agente.html' }
         ]
     },
     sacramento: {
         classe: 'sacramento',
         opcoes: [
-            { nome: 'Mestre', img: 'imagens/bispos.jfif' },
-            { nome: 'Pistoleiro', img: 'imagens/horacio.jfif' }
+            { nome: 'Mestre', img: 'imagens/bispos.jfif', link: 'sacramento_mestre.html' },
+            { nome: 'Pistoleiro', img: 'imagens/horacio.jfif', link: 'sacramento_pistoleiro.html' }
         ]
     },
     tormenta: {
         classe: 'tormenta',
         opcoes: [
-            { nome: 'Mestre', img: 'imagens/mestre2.jpg' },
-            { nome: 'Herói', img: 'imagens/herói.jpg' }
+            { nome: 'Mestre', img: 'imagens/mestre2.jpg', link: 'tormenta_mestre.html' },
+            { nome: 'Herói', img: 'imagens/herói.jpg', link: 'tormenta_heroi.html' }
         ]
     }
 };
@@ -349,19 +349,16 @@ function abrirSelecao(sistemaKey) {
     const selecaoDiv = document.getElementById('selecao');
     const opcoesContainer = document.getElementById('opcoes-dinamicas');
     
-    // Limpa classes de sistema anteriores e adiciona a nova
     selecaoDiv.classList.remove('ordem', 'sacramento', 'tormenta');
     selecaoDiv.classList.add(config.classe);
     
-    // Gera os cards dinamicamente
     opcoesContainer.innerHTML = config.opcoes.map(opt => `
-        <div class="opcao card" onclick="escolherOpcao('${opt.nome}')">
+        <div class="opcao card" onclick="escolherOpcao('${opt.link}')">
             <img src="${opt.img}" alt="${opt.nome}">
             <div class="card-body">${opt.nome}</div>
         </div>
     `).join('');
     
-    // Ativa a transição
     document.getElementById('hub').classList.add('oculto');
     selecaoDiv.classList.add('ativa');
 }
@@ -371,8 +368,9 @@ function voltarHub() {
     document.getElementById('selecao').classList.remove('ativa');
 }
 
-function escolherOpcao(opcao) {
-    alert('Escolheu: ' + opcao);
+function escolherOpcao(link) {
+    // Redireciona para a página correspondente
+    window.location.href = link;
 }
 </script>
 
