@@ -12,21 +12,32 @@
 /* ===== RESET / BASE ===== */
 * {
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
 }
 
 html, body {
     margin: 0;
     height: 100%;
-    background: #0f0f0f;
+    background: radial-gradient(circle, #1a0505 0%, #0a0a0a 70%);
     color: #eaeaea;
     overflow: hidden;
+}
+
+:root {
+    --primary-red: #500000;
+    --secondary-red: #8B0000;
+    --bg-dark: #0a0a0a;
+    --bg-panel: #141414;
+    --border-color: #2a2a2a;
+    --text-light: #dcdcdc;
+    --text-muted: #888;
+    --accent-glow: rgba(139, 0, 0, 0.7);
 }
 
 /* ===== LAYOUT ===== */
 .container-custom {
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 120px 1fr;
     height: 100vh;
     transition: opacity 0.6s ease-in-out, filter 0.6s ease-in-out;
 }
@@ -37,15 +48,32 @@ html, body {
     pointer-events: none;
 }
 
-/* ===== SIDEBAR (ESQUERDA) ===== */
+/* ===== SIDEBAR (ESQUERDA) - PADRONIZADA ===== */
 .sidebar {
-    background: #1e1e1e;
-    padding: 24px 15px;
-    border-right: 1px solid #2a2a2a;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    padding: 12px;
+    gap: 12px;
     align-items: center;
     z-index: 5;
+}
+
+.panel-header {
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.panel-header h2 {
+    font-size: 0.75rem;
+    color: var(--secondary-red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px var(--accent-glow);
+    margin: 0;
 }
 
 .profile-pic {
@@ -53,26 +81,52 @@ html, body {
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #500000;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    border: 2px solid var(--secondary-red);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.profile-info {
+    text-align: center;
+    padding: 8px;
+    font-size: 0.75rem;
+}
+
+.profile-info h3 {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 4px;
+    margin: 0;
+}
+
+.profile-info p {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    line-height: 1.2;
+    margin: 0;
 }
 
 .back-button {
-    background: transparent;
-    border: 1px solid #555;
-    color: #eaeaea;
-    padding: 8px 15px;
-    border-radius: 4px;
+    background: var(--primary-red);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.85rem;
+    font-weight: bold;
     transition: all 0.3s ease;
     width: 100%;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .back-button:hover {
-    background: #500000;
-    border-color: #750904;
+    background: var(--secondary-red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 /* ===== COLUNA CENTRAL ===== */
@@ -96,6 +150,7 @@ html, body {
     margin: 0;
     font-size: 28px;
     color: #ffffff;
+    text-shadow: 0 0 10px var(--accent-glow);
 }
 
 /* ===== SISTEMAS ===== */
@@ -264,6 +319,10 @@ html, body {
     font-size: 14px;
     transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
     z-index: 110;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Cores do Botão por Sistema */
@@ -276,6 +335,32 @@ html, body {
 .selecao.tormenta .voltar-selecao { background: #006464; }
 .selecao.tormenta .voltar-selecao:hover { background: #20b2aa; transform: translateX(5px); box-shadow: 0 0 15px rgba(32, 178, 170, 0.5); }
 
+/* Responsividade */
+@media (max-width: 768px) {
+    .container-custom {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: row;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .profile-pic {
+        width: 60px;
+        height: 60px;
+    }
+
+    .back-button {
+        margin-top: 0;
+        margin-left: auto;
+    }
+}
+
 </style>
 </head>
 
@@ -283,7 +368,13 @@ html, body {
 
 <div class="container-custom" id="hub">
     <div class="sidebar">
+        <div class="panel-header">
+            <h2>Nowackpjj</h2>
+        </div>
         <img src="imagens/Multilador Noturno.jfif" alt="Foto de Perfil" class="profile-pic">
+        <div class="profile-info">
+            <p>Seleção de Sistemas</p>
+        </div>
         <button class="back-button" onclick="history.back()">
             <i class="bi bi-arrow-left"></i> Voltar
         </button>
@@ -325,7 +416,7 @@ const sistemasConfig = {
         classe: 'ordem',
         opcoes: [
             { nome: 'Mestre', img: 'imagens/mestre.jfif', link: '/dash/mestre_ordem/selecao_campanha.php' },
-            { nome: 'Agente', img: 'imagens/Agente.jfif', link: 'ordem_agente.html' }
+            { nome: 'Agente', img: 'imagens/Agente.jfif', link: '/dash/agente_ordem/agentes.php' }
         ]
     },
     sacramento: {

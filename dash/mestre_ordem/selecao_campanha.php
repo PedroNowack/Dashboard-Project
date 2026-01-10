@@ -350,7 +350,7 @@
             
             <!-- Campanha 1 -->
             <div class="campanha-wrapper">
-                <div class="campanha-card" onclick="window.location.href='ordem_mestre.html'">
+                <div class="campanha-card" onclick="window.location.href='mestre.php'">
                     <img src="imagens/Título_Sinais_do_Outro_Lado.webp" class="campanha-img" alt="Sinais do Outro Lado" onerror="this.src='https://via.placeholder.com/300x180?text=Sinais+do+Outro+Lado'">
                     <div class="campanha-info">
                         <div class="campanha-titulo">Sinais do Outro Lado</div>
@@ -381,7 +381,7 @@
 
             <!-- Campanha 2 -->
             <div class="campanha-wrapper">
-                <div class="campanha-card" onclick="window.location.href='ordem_mestre.html'">
+                <div class="campanha-card" onclick="window.location.href='mestre.php'">
                     <img src="imagens/segredo.webp" class="campanha-img" alt="O Segredo na Ilha" onerror="this.src='https://via.placeholder.com/300x180?text=O+Segredo+na+Ilha'">
                     <div class="campanha-info">
                         <div class="campanha-titulo">O Segredo na Ilha</div>
@@ -412,7 +412,7 @@
 
             <!-- Campanha 3 -->
             <div class="campanha-wrapper">
-                <div class="campanha-card" onclick="window.location.href='ordem_mestre.html'">
+                <div class="campanha-card" onclick="window.location.href='mestre.php'">
                     <img src="imagens/calamidade.png" class="campanha-img" alt="Calamidade" onerror="this.src='https://via.placeholder.com/300x180?text=Calamidade'">
                     <div class="campanha-info">
                         <div class="campanha-titulo">Calamidade</div>
@@ -514,7 +514,7 @@
             }
 
             function startAnimation() {
-                decryptEffect(welcomeText, "BEM VINDO", 3000, () => {
+                decryptEffect(welcomeText, "BEM-VINDO", 3000, () => {
                     overlay.style.opacity = '0';
                     setTimeout(() => {
                         overlay.style.visibility = 'hidden';
